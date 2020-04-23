@@ -3,11 +3,10 @@ import styled from 'styled-components';
 
 import Nav from './components/Nav';
 import Main from './components/Main';
-import Search from './components/Search';
-import Cards from './components/CardsContainer';
+import Footer from './components/Footer';
 
-const Body = styled.body`
-  background-color: #FFF;
+const Body = styled.div`
+  background-color: #CCC;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -15,18 +14,13 @@ const Body = styled.body`
   font-family: 'Share Tech', sans-serif;
 `
 const App = () => {
-
   return (
-    <Body>
-
-      <Nav />
-      <Main />
-      <Search />
-      <Cards />
-
-    </Body>
+      <Body>
+        <Nav />
+        <Main />
+        <Footer />        
+      </Body>
   );
-
 }
 
 export default App;

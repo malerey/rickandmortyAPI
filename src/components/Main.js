@@ -1,20 +1,23 @@
-import React from 'react'; 
+import React from 'react';
 import styled from 'styled-components';
 
 import portada from '../assets/main.png';
 
 const MainSection = styled.main`
   width: 80%;
-  height: 100%;
   margin: 20px 0px;
+  border-radius: 10px;
+  box-shadow: 0 19px 38px rgba(0,0,0,0.50), 0 15px 12px rgba(0,0,0,0.40);
+  overflow: hidden;
   .img-portada {
     width: 100%;
-    height: auto;
+    height: 690px;
     img {
-      width: 100%;
-      height: auto;
+    width: auto;
+    height: 700px;
     }
   }
+  
   .menu-options {
     width: 400px;
     display: flex;
@@ -24,13 +27,11 @@ const MainSection = styled.main`
 `
 
 const Main = () => {
-  
   return (
     <MainSection>
-     <div className='img-portada'><img src={portada} alt='portada de Rick and Morty' /></div>
+      <div className='img-portada'><img src={portada} alt='portada de Rick and Morty' /></div>
     </MainSection>
   );
-
 }
 
 export default Main;
