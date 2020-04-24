@@ -11,10 +11,10 @@ const MainSection = styled.main`
   overflow: hidden;
   .img-portada {
     width: 100%;
-    height: 690px;
-    img {
-    width: auto;
     height: 700px;
+    img {
+    width: 100%;
+    height: 100%;
     }
   }
   

@@ -15,11 +15,11 @@ const Body = styled.div`
 `
 const App = () => {
   return (
-      <Body>
-        <Nav />
-        <Main />
-        <Footer />        
-      </Body>
+    <Body>
+      <Nav />
+      <Main />
+      <Footer />
+    </Body>
   );
 }
 

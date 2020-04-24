@@ -15,7 +15,6 @@ const FooterBar = styled.footer`
   justify-content: center;
   align-items: center;
   font-size: 18px;
-  font-weight: lighter;
   h5 {
     margin: 5px;
     text-align: center;
