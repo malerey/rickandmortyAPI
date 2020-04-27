@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from 'react';
+// import { makeStyles } from '@material-ui/core/styles';
+import Pagination from '@material-ui/lab/Pagination';
+
 import styled from 'styled-components';
 
 import Nav from './Nav';
@@ -62,6 +65,28 @@ const PersSection = styled.div`
   }
 `
 
+const PaginationContainer = styled.div`
+  background:#222;
+  color: #33FFC4;
+  margin: 20px;
+  border-radius: 5px;
+  box-shadow: 0 19px 38px rgba(0,0,0,0.50), 0 15px 12px rgba(0,0,0,0.40);
+  nav ul li button {
+    color: #33FFC4;
+    font-family: 'Share Tech', sans-serif;
+  }
+  nav ul li button:hover {
+    background-color: #111;
+    font-family: 'Share Tech', sans-serif;
+  }
+  nav ul li button:selected {
+    background-color: #111;
+    font-family: 'Share Tech', sans-serif;
+  }
+}
+`
+
+
 const Personajes = () => {
 
   const [personajes, setPersonajes] = useState([]);
@@ -106,6 +131,11 @@ const Personajes = () => {
       <section className='card-container'>
         {personajes.map(personaje => <Card key={personaje.id} info={personaje} />)}
       </section>
+
+      <PaginationContainer className='pagination'>
+        <Pagination count={20} />
+
+      </PaginationContainer>
 
       <Footer />
     </PersSection>
