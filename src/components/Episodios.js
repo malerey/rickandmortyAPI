@@ -4,24 +4,26 @@ import styled from 'styled-components';
 import Nav from './Nav';
 import Banner from './Banner';
 import Card from './EpisCard';
+import Pagination from './Pagination';
 import Footer from './Footer';
 
 import rick from '../assets/mini-rick.png';
 
 const SearchBar = styled.section`
   background: #000;
-  color: #33FFC4;
+  color: #33ffc4;
   width: 80%;
   height: 60px;
   margin: 20px 20px;
   padding: 5px 0px;
   border-radius: 10px;
-  box-shadow: 0 19px 38px rgba(0,0,0,0.50), 0 15px 12px rgba(0,0,0,0.40);
+  box-shadow: 0 19px 38px rgba(0, 0, 0, 0.5), 0 15px 12px rgba(0, 0, 0, 0.4);
   display: flex;
   flex-direction: row;
   justify-content: center;
-  align-items: center;  
+  align-items: center;
   font-size: 20px;
+  font-weight: bold;
   form {
     width: 600px;
     display: flex;
@@ -37,6 +39,28 @@ const SearchBar = styled.section`
     width: auto;
     img {
       height: 100%;
+    }
+  }
+
+  @media (max-width: 800px) {
+    width: 90%;
+    height: 40px;
+    margin: 10px 10px;
+    padding: 5px 0px;
+    font-size: 18px;
+    form {
+      label {
+        width: 150px;
+        margin-left: 15px;
+      }
+      input {
+        width: 240px;
+      }
+      .img-rick {
+        height: 40px;
+        width: auto;
+        margin: 0px 15px;
+      }
     }
   }
 `
@@ -59,6 +83,13 @@ const EpisSection = styled.div`
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
+  }
+
+  @media (max-width: 800px) {
+    .card-container {
+      width: 90%;
+      margin: 10px 10px;
+    }
   }
 `
 
@@ -107,6 +138,7 @@ const Episodios = () => {
         {episodios.map(episodio => <Card key={episodio.id} info={episodio} />)}
       </section>
       
+      <Pagination />
       <Footer />
     </EpisSection>
   );

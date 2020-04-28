@@ -1,15 +1,17 @@
-import React from 'react';
-import styled from 'styled-components';
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+
+import ModalCard from "./ModalPersCard";
 
 const CardInfo = styled.div`
   background-color: #000;
-  color: #33FFC4;
-  font-family: 'Share Tech', sans-serif;
+  color: #33ffc4;
+  font-family: "Share Tech", sans-serif;
   width: 270px;
   height: 420px;
   margin: 25px;
   border-radius: 15px;
-  box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+  box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.22);
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
@@ -23,7 +25,7 @@ const CardInfo = styled.div`
       }
     }
     .card-title h1 {
-      font-family: 'Share Tech', sans-serif;
+      font-family: "Share Tech", sans-serif;
       font-weight: lighter;
       font-size: 20px;
       text-align: center;
@@ -42,33 +44,72 @@ const CardInfo = styled.div`
       }
     }
   }
+`;
+
+const Modal = styled.div`
+background-color: #11111140;
+height: 100%;
+width: 100%;
+position: fixed;
+top: 0;
+z-index: 1;
+display: flex;
+justify-content: center;
 `
 
-const PersCard = props => { 
+const PersCard = props => {
+
+  const [cardElegida, setCardElegida] = useState([]);
+  const [modal, setModal] = useState(false);
+
+  useEffect(() => {
+    fetch(`https://rickandmortyapi.com/api/character`)
+      .then(res => res.json())
+      .then(data => setCardElegida(props.info));
+  }, []);
+
+  const handleClick = () => {
+    handleClickModal();
+  };
+
+  const handleClickModal = () => {
+    setModal(!modal);
+  };
+
   return (
-    <CardInfo>
-      <div className='card-content'>
-        <div className='card-img'><img src={props.info.image} alt={props.info.name} /></div>
-        <div className='card-title'>
-          <h1>{props.info.name}</h1>
+    <>
+      <CardInfo onClick={() => handleClick(props)}>
+        <div className="card-content">
+          <div className="card-img">
+            <img src={props.info.image} alt={props.info.name} />
+          </div>
+          <div className="card-title">
+            <h1>{props.info.name}</h1>
+          </div>
+          <div className="card-info">
+            <div>
+              <p>GENERO</p>
+              <p>{props.info.gender}</p>
+            </div>
+            <div>
+              <p>ESTADO</p>
+              <p>{props.info.status}</p>
+            </div>
+            <div>
+              <p>ORIGEN</p>
+              <p>{props.info.origin.name}</p>
+            </div>
+          </div>
         </div>
-        <div className='card-info'>
-          <div>
-            <p>GENERO</p>
-            <p>{props.info.gender}</p>
-          </div>
-          <div>
-            <p>ESTADO</p>
-            <p>{props.info.status}</p>
-          </div>
-          <div>
-            <p>ORIGEN</p>
-            <p>{props.info.origin.name}</p>
-          </div>
-        </div>
-      </div>
-    </CardInfo>
+      </CardInfo>
+
+      {modal && (
+        <Modal>
+            <ModalCard info={cardElegida}/>
+        </Modal>
+      )}
+    </>
   );
-}
+};
 
 export default PersCard;
