@@ -4,7 +4,6 @@ import styled from "styled-components";
 import Nav from "./Nav";
 import Banner from "./Banner";
 import Card from "./PersCard";
-import Pagination from "./Pagination";
 import Footer from "./Footer";
 
 import rick from "../assets/mini-rick.png";
@@ -93,14 +92,86 @@ const PersSection = styled.div`
   }
 `;
 
+const PaginationContainer = styled.div`
+  width: 400px;
+  height: 40px;
+  background: #222;
+  color: #33ffc4;
+  margin: 20px;
+  border-radius: 5px;
+  box-shadow: 0 19px 38px rgba(0, 0, 0, 0.5), 0 15px 12px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  nav {
+    button {
+      font-family: "Share Tech", sans-serif;
+      font-size: 20px;
+      font-weight: bold;
+      background: #222;
+      color: #33ffc4;
+      height: 30px;
+      border: none;
+    }
+    .first,
+    .last {
+      width: 30px;
+      height: 30px;
+      margin: 5px;
+      text-align: center;
+    }
+    .first:hover,
+    .last:hover {
+      background-color: #111;
+      border-radius: 50%;
+    }
+    .first:focus,
+    .last:focus {
+      background-color: #33ffc4bf;
+      color: #111;
+      border-radius: 50%;
+    }
+    .prev {
+      width: 100px;
+      height: 30px;
+      text-align: center;
+    }
+    .next {
+      width: 60px;
+      height: 30px;
+      text-align: center;
+    }
+    .prev:hover,
+    .next:hover {
+      background-color: #111;
+      border-radius: 5px;
+    }
+    .prev:focus,
+    .next:focus {
+      background-color: #33ffc4bf;
+      color: #111;
+      border-radius: 5px;
+    }
+  }
+
+  @media (max-width: 800px) {
+    width: 90%;
+  }
+`;
+
 const Personajes = () => {
   const [personajes, setPersonajes] = useState([]);
   const [busqueda, setBusqueda] = useState("");
+  const [pagina, setPagina] = useState("");
 
   useEffect(() => {
-    fetch(`https://rickandmortyapi.com/api/character`)
+    fetch(`https://rickandmortyapi.com/api/character/?page=${pagina}`)
       .then(res => res.json())
-      .then(data => setPersonajes(data.results));
+      .then(data => {
+        setPersonajes(data.results);
+        setPagina(1);
+      });
   }, []);
 
   const buscarDato = () => {
@@ -120,11 +191,47 @@ const Personajes = () => {
     buscarDato();
   };
 
+  const handleClickFirst = () => {
+    fetch(`https://rickandmortyapi.com/api/character/?page=1`)
+      .then(res => res.json())
+      .then(data => {
+        setPersonajes(data.results);
+        setPagina(1);
+      });
+  };
+
+  const handleClickPrev = () => {
+    fetch(`https://rickandmortyapi.com/api/character/?page=${pagina - 1}`)
+      .then(res => res.json())
+      .then(data => {
+        setPersonajes(data.results);
+        setPagina(pagina - 1);
+      });
+  };
+
+  const handleClickNext = () => {
+    fetch(`https://rickandmortyapi.com/api/character/?page=${pagina + 1}`)
+      .then(res => res.json())
+      .then(data => {
+        setPersonajes(data.results);
+        setPagina(pagina + 1);
+      });
+  };
+
+  const handleClickLast = () => {
+    fetch(`https://rickandmortyapi.com/api/character/?page=25`)
+      .then(res => res.json())
+      .then(data => {
+        setPersonajes(data.results);
+        setPagina(data.info.pages);
+      });
+  };
+
   return (
     <PersSection>
       <Nav />
       <Banner />
-      
+
       <SearchBar>
         <form onSubmit={handleSubmit}>
           <label>INICIAR BUSQUEDA</label>
@@ -138,14 +245,30 @@ const Personajes = () => {
           </div>
         </form>
       </SearchBar>
-      
-      <section className="card-container" >
+
+      <section className="card-container">
         {personajes.map(personaje => (
           <Card key={personaje.id} info={personaje} />
         ))}
       </section>
-      
-      <Pagination />
+
+      <PaginationContainer className="pagination">
+        <nav className="pagination-navbar">
+          <button className="first" onClick={handleClickFirst}>
+            {"<"}
+          </button>
+          <button className="prev" onClick={handleClickPrev}>
+            PREVIOUS
+          </button>
+          <button className="next" onClick={handleClickNext}>
+            NEXT
+          </button>
+          <button className="last" onClick={handleClickLast}>
+            {">"}
+          </button>
+        </nav>
+      </PaginationContainer>
+
       <Footer />
     </PersSection>
   );

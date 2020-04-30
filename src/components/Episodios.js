@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
 
-import Nav from './Nav';
-import Banner from './Banner';
-import Card from './EpisCard';
-import Pagination from './Pagination';
-import Footer from './Footer';
+import Nav from "./Nav";
+import Banner from "./Banner";
+import Card from "./EpisCard";
+import Footer from "./Footer";
 
-import rick from '../assets/mini-rick.png';
+import rick from "../assets/mini-rick.png";
 
 const SearchBar = styled.section`
   background: #000;
@@ -63,21 +62,21 @@ const SearchBar = styled.section`
       }
     }
   }
-`
+`;
 
 const EpisSection = styled.div`
-  background: #CCC;
+  background: #ccc;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-family: 'Share Tech', sans-serif;
+  font-family: "Share Tech", sans-serif;
   .card-container {
     width: 80%;
     background: #222;
     margin: 20px 0px;
     border-radius: 10px;
-    box-shadow: 0 19px 38px rgba(0,0,0,0.50), 0 15px 12px rgba(0,0,0,0.40);
+    box-shadow: 0 19px 38px rgba(0, 0, 0, 0.5), 0 15px 12px rgba(0, 0, 0, 0.4);
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
@@ -91,57 +90,188 @@ const EpisSection = styled.div`
       margin: 10px 10px;
     }
   }
-`
+`;
+
+const PaginationContainer = styled.div`
+  width: 400px;
+  height: 40px;
+  background: #222;
+  color: #33ffc4;
+  margin: 20px;
+  border-radius: 5px;
+  box-shadow: 0 19px 38px rgba(0, 0, 0, 0.5), 0 15px 12px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  nav {
+    button {
+      font-family: "Share Tech", sans-serif;
+      font-size: 20px;
+      font-weight: bold;
+      background: #222;
+      color: #33ffc4;
+      height: 30px;
+      border: none;
+    }
+    .first,
+    .last {
+      width: 30px;
+      height: 30px;
+      margin: 5px;
+      text-align: center;
+    }
+    .first:hover,
+    .last:hover {
+      background-color: #111;
+      border-radius: 50%;
+    }
+    .first:focus,
+    .last:focus {
+      background-color: #33ffc4bf;
+      color: #111;
+      border-radius: 50%;
+    }
+    .prev {
+      width: 100px;
+      height: 30px;
+      text-align: center;
+    }
+    .next {
+      width: 60px;
+      height: 30px;
+      text-align: center;
+    }
+    .prev:hover,
+    .next:hover {
+      background-color: #111;
+      border-radius: 5px;
+    }
+    .prev:focus,
+    .next:focus {
+      background-color: #33ffc4bf;
+      color: #111;
+      border-radius: 5px;
+    }
+  }
+
+  @media (max-width: 800px) {
+    width: 90%;
+  }
+`;
 
 const Episodios = () => {
-
   const [episodios, setEpisodios] = useState([]);
-  const [busqueda, setBusqueda] = useState('');
+  const [busqueda, setBusqueda] = useState("");
+  const [pagina, setPagina] = useState("");
 
   useEffect(() => {
-    fetch(`https://rickandmortyapi.com/api/episode`)
+    fetch(`https://rickandmortyapi.com/api/episode?page=${pagina}`)
       .then(res => res.json())
-      .then(data => setEpisodios(data.results))
+      .then(data => {
+        setEpisodios(data.results);
+        setPagina(1);
+      });
   }, []);
 
   const buscarDato = () => {
     fetch(`https://rickandmortyapi.com/api/episode/?name=${busqueda}`)
       .then(res => res.json())
-      .then(data => setEpisodios(data.results))
-  }
+      .then(data => setEpisodios(data.results));
+  };
 
   useEffect(buscarDato, []);
 
   const handleChange = e => {
     setBusqueda(e.target.value);
-  }
+  };
 
   const handleSubmit = e => {
     e.preventDefault();
     buscarDato();
-  }
+  };
+
+  const handleClickFirst = () => {
+    fetch(`https://rickandmortyapi.com/api/episode?page=1`)
+      .then(res => res.json())
+      .then(data => {
+        setEpisodios(data.results);
+        setPagina(1);
+      });
+  };
+
+  const handleClickPrev = () => {
+    fetch(`https://rickandmortyapi.com/api/episode?page=${pagina - 1}`)
+      .then(res => res.json())
+      .then(data => {
+        setEpisodios(data.results);
+        setPagina(pagina - 1);
+      });
+  };
+
+  const handleClickNext = () => {
+    fetch(`https://rickandmortyapi.com/api/episode?page=${pagina + 1}`)
+      .then(res => res.json())
+      .then(data => {
+        setEpisodios(data.results);
+        setPagina(pagina + 1);
+      });
+  };
+
+  const handleClickLast = () => {
+    fetch(`https://rickandmortyapi.com/api/episode?page=2`)
+      .then(res => res.json())
+      .then(data => {
+        setEpisodios(data.results);
+        setPagina(data.info.pages);
+      });
+  };
 
   return (
     <EpisSection>
       <Nav />
       <Banner />
-      
+
       <SearchBar>
         <form onSubmit={handleSubmit}>
           <label>INICIAR BUSQUEDA</label>
-          <input value={busqueda} placeholder='Buscar episodio...' onChange={handleChange} />
-          <div className='img-rick'><img src={rick} alt='Rick observa mientras buscas' /></div>
+          <input
+            value={busqueda}
+            placeholder="Buscar episodio..."
+            onChange={handleChange}
+          />
+          <div className="img-rick">
+            <img src={rick} alt="Rick observa mientras buscas" />
+          </div>
         </form>
       </SearchBar>
 
-      <section className='card-container'>
-        {episodios.map(episodio => <Card key={episodio.id} info={episodio} />)}
+      <section className="card-container">
+        {episodios.map(episodio => (
+          <Card key={episodio.id} info={episodio} />
+        ))}
       </section>
-      
-      <Pagination />
+
+      <PaginationContainer className="pagination">
+        <nav className="pagination-navbar">
+          <button className="first" onClick={handleClickFirst}>
+            {"<"}
+          </button>
+          <button className="prev" onClick={handleClickPrev}>
+            PREVIOUS
+          </button>
+          <button className="next" onClick={handleClickNext}>
+            NEXT
+          </button>
+          <button className="last" onClick={handleClickLast}>
+            {">"}
+          </button>
+        </nav>
+      </PaginationContainer>
+
       <Footer />
     </EpisSection>
   );
-}
+};
 
 export default Episodios;

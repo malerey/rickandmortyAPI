@@ -53,7 +53,7 @@ const NavBar = styled.nav`
       height: 100%;
     }
   }
-`
+`;
 
 const Nav = () => {
   return (

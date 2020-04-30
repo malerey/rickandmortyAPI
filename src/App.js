@@ -1,18 +1,18 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
-import Nav from './components/Nav';
-import Main from './components/Main';
-import Footer from './components/Footer';
+import Nav from "./components/Nav";
+import Main from "./components/Main";
+import Footer from "./components/Footer";
 
 const Body = styled.div`
-  background-color: #CCC;
+  background-color: #ccc;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-family: 'Share Tech', sans-serif;
-`
+  font-family: "Share Tech", sans-serif;
+`;
 const App = () => {
   return (
     <Body>
@@ -21,6 +21,6 @@ const App = () => {
       <Footer />
     </Body>
   );
-}
+};
 
 export default App;

@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
-import ModalCard from "./ModalPersCard";
+import ModalCard from "./PersCardModal";
 
 const CardInfo = styled.div`
   background-color: #000;
   color: #33ffc4;
   font-family: "Share Tech", sans-serif;
   width: 270px;
-  height: 420px;
+  height: 440px;
   margin: 25px;
   border-radius: 15px;
   box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.22);
@@ -29,12 +29,14 @@ const CardInfo = styled.div`
       font-weight: lighter;
       font-size: 20px;
       text-align: center;
-      margin: 10px 0;
+      height: 46px;
+      margin: 10px 5px;
     }
     .card-info {
       font-size: 16px;
       display: flex;
       flex-direction: column;
+      justify-content: space-between;
       padding: 0px 10px;
       div {
         display: flex;
@@ -47,23 +49,21 @@ const CardInfo = styled.div`
 `;
 
 const Modal = styled.div`
-background-color: #11111140;
-height: 100%;
-width: 100%;
-position: fixed;
-top: 0;
-z-index: 1;
-display: flex;
-justify-content: center;
-`
+  background-color: #11111140;
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  display: flex;
+  justify-content: center;
+`;
 
 const PersCard = props => {
-
   const [cardElegida, setCardElegida] = useState([]);
   const [modal, setModal] = useState(false);
 
   useEffect(() => {
-    fetch(`https://rickandmortyapi.com/api/character`)
+    fetch(`https://rickandmortyapi.com/api/character/`)
       .then(res => res.json())
       .then(data => setCardElegida(props.info));
   }, []);
@@ -104,8 +104,8 @@ const PersCard = props => {
       </CardInfo>
 
       {modal && (
-        <Modal>
-            <ModalCard info={cardElegida}/>
+        <Modal onClick={() => handleClick(props)}>
+          <ModalCard info={cardElegida} />
         </Modal>
       )}
     </>
