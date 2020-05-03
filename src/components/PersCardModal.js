@@ -64,12 +64,15 @@ const ModalCardInfo = styled.div`
 const PersCardModal = props => {
   const [cerrarModal, setCerrarModal] = useState(false);
 
+ {/* Dado que de cerrar el modal se ocupa PersCard, esta funcion aca es innecesaria, 
+al igual que el estado cerrarModal. */}
   const handleClickCerrar = () => {
     setCerrarModal(!cerrarModal);
   };
 
   return (
     <>
+    {/* Dado que de cerrar el modal se ocupa PersCard, esta validacion aca es innecesaria. */}
       {!cerrarModal && (
         <ModalCardInfo>
           <div className="card-content">
@@ -84,6 +87,7 @@ const PersCardModal = props => {
               <h1>ID: {props.info.id}</h1>
             </div>
             <div className="card-info">
+            {/* Estos <divs> tan repetitivos podrian ser componentes! */}
               <div>
                 <p>ESPECIE</p>
                 <p>{props.info.species}</p>

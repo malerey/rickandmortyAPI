@@ -8,6 +8,9 @@ import Footer from "./Footer";
 
 import rick from "../assets/mini-rick.png";
 
+// Buenisimo el estilado. Hay varias cosas que habras notado que se repiten, como
+// las sombras. Para eso es buena idea tener un "theme". No es algo que hayamos visto, 
+// pero si te interesa podes explorarlo acá: https://styled-components.com/docs/advanced
 const SearchBar = styled.section`
   background: #000;
   color: #33ffc4;
@@ -165,12 +168,30 @@ const Personajes = () => {
   const [busqueda, setBusqueda] = useState("");
   const [pagina, setPagina] = useState("");
 
+
+  // buscarDato() podria ejecutarse dentro de este useEffect, asi no tenes que usar dos. 
+
+  // Repetis varias veces la URL de la API, asi que es buena idea ponerla dentro de una 
+  // variable. 
+  // En general a esas variables que se ejecutan en todo el componente las ponemos en mayusculas.
+  // Por ejemplo:
+  // const API_URL = 'https://rickandmortyapi.com/api/character/'
+  // Y luego en el fetch, por ejemplo:
+  // fetch(`${API_URL}?page=${pagina}`) 
   useEffect(() => {
+
+    // Fijate que aca estamos diciendole a React que haga este fetch cada vez que se ejecuta el efecto, 
+    // y el array de dependencias del efecto esta vacio: eso significa que se va a ejecutar una sola vez. 
+    // Ahora bien, si agregaramos "pagina" al array de dependencias, 
+    // cada vez que se actualice el estado "pagina", este efecto se ejecutaria, y con el todo el fetch
+    // La consecuencia es que no tendrias que escribir el fetch todas las veces en las funciones 
+    // handleClick, porque con actualizar la variable pagina ya se te ejecutaria este efecto :) 
+    // De paso, te liberas del warning horrible de React
+    // (avisame si esto no queda claro)
     fetch(`https://rickandmortyapi.com/api/character/?page=${pagina}`)
       .then(res => res.json())
       .then(data => {
         setPersonajes(data.results);
-        setPagina(1);
       });
   }, []);
 
@@ -190,6 +211,39 @@ const Personajes = () => {
     e.preventDefault();
     buscarDato();
   };
+
+  // Para no tener 4 funciones aqui que hacen basicamente lo mismo, 
+  // podriamos hacer una sola funcion que reciba parametros. 
+  // es el boton el que le indica a la funcion a que pagina tiene que ir
+  // Por ejemplo, supongamos este JSX: 
+
+//   <button className="first" onClick={() => handleClick(1)}>
+//   {"<"}
+// </button>
+// <button className="prev" onClick={() => handleClick(pagina - 1)}>
+//   PREVIOUS
+// </button>
+// <button className="next" onClick={() => handleClick(pagina + 1)}>
+//   NEXT
+// </button>
+// <button className="last" onClick={() => handleClick(25)}>
+//   {">"}
+// </button>
+
+// Ahora podriamos tener una sola funcion:
+// const handleClick = page => {
+//   fetch(`https://rickandmortyapi.com/api/character/?page=${page}`)
+//     .then(res => res.json())
+//     .then(data => {
+//       setPersonajes(data.results);
+//       setPagina(page);
+//     });
+// };
+
+// Y si hacemos lo que te dije de agregar "pagina" en el array de dependencias de useEffect, 
+// esta funcion podria quedar mas breve aun:
+// const handleClick = page => setPagina(page)
+
 
   const handleClickFirst = () => {
     fetch(`https://rickandmortyapi.com/api/character/?page=1`)
@@ -247,6 +301,7 @@ const Personajes = () => {
       </SearchBar>
 
       <section className="card-container">
+      {/* Excelente usar el id para la key */}
         {personajes.map(personaje => (
           <Card key={personaje.id} info={personaje} />
         ))}

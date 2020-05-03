@@ -8,6 +8,8 @@ import Footer from "./Footer";
 
 import rick from "../assets/mini-rick.png";
 
+// Mismas observaciones a este componente que a Personajes, especialmente las funciones de paginación
+
 const SearchBar = styled.section`
   background: #000;
   color: #33ffc4;

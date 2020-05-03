@@ -63,10 +63,16 @@ const PersCard = props => {
   const [modal, setModal] = useState(false);
 
   useEffect(() => {
+    // este fetch es innecesario: no lo estamos usando, ya que la info viene de props.info
+    // Una llamada innecesaria a la API siempre hace que nuestra web sea mas lenta. 
+    // Esta funcion deberia tener solo setCardElegida(props.info), no el fetch. 
     fetch(`https://rickandmortyapi.com/api/character/`)
       .then(res => res.json())
       .then(data => setCardElegida(props.info));
   }, []);
+
+  // Fijate que aca tenes dos funciones. A handleClick la llama el boton, y despues llama a handleClickModal
+  // Podria ser solo una: que el boton llame directamente a handleClickModal y listo. 
 
   const handleClick = () => {
     handleClickModal();
@@ -78,6 +84,8 @@ const PersCard = props => {
 
   return (
     <>
+    {/* Aca le estamos pasando "props" como parametro a handleClick, pero handleClick no necesita
+    parametros. Es innecesario.  */}
       <CardInfo onClick={() => handleClick(props)}>
         <div className="card-content">
           <div className="card-img">
@@ -103,6 +111,8 @@ const PersCard = props => {
         </div>
       </CardInfo>
 
+       {/* Aca le estamos pasando "props" como parametro a handleClick, pero handleClick no necesita
+    parametros. Es innecesario.  */}
       {modal && (
         <Modal onClick={() => handleClick(props)}>
           <ModalCard info={cardElegida} />
